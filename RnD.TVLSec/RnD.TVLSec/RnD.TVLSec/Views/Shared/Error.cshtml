@@ -1,0 +1,18 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Error";
+}
+<div id="errorPage">
+    <div class="error-page">
+        <h2 class="headline">
+            @Response.StatusCode</h2>
+        <div class="error-content">
+            <h3>
+                <i class="fa fa-warning text-yellow"></i>Oops! Something went wrong.</h3>
+            <p>
+                @Model.Exception.Message
+            </p>
+        </div>
+    </div>
+    <!-- /.error-page -->
+</div>

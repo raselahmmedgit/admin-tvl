@@ -1,0 +1,44 @@
+﻿@model RnD.TVLSec.ViewModels.MenuViewModel
+<div id="detailsPage" class="detailsPage  form-win col-xs-12">
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationName)
+            @Html.DisplayFor(model => model.ApplicationName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModuleName)
+            @Html.DisplayFor(model => model.ModuleName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentMenuName)
+            @Html.DisplayFor(model => model.ParentMenuName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MenuName)
+            @Html.DisplayFor(model => model.MenuName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MenuCaption)
+            @Html.DisplayFor(model => model.MenuCaption)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PageUrl)
+            @Html.DisplayFor(model => model.PageUrl)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SerialNo)
+            @Html.DisplayFor(model => model.SerialNo)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderNo)
+            @Html.DisplayFor(model => model.OrderNo)
+        </div>
+    </div>
+    <div class="row form-hr">
+        <div id="buttonZone" class="pull-right buttonZone">
+            <button type="button" class="btn btn-warning btn-sm btn-flat" id="btnCancel" name="btnCancel"
+                onclick="CloseAppCommonWindow()">
+                <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+        </div>
+    </div>
+</div>

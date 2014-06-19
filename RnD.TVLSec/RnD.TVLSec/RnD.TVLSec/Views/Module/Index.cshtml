@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Module";
+}
+<div id="indexPage">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <a href="@Url.Action("Add", "Module")" title="Add" class="btn btn-primary btn-sm btn-flat" id="lnkAddCommon">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a></div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <div id="gridZone">
+                        <div id="gridModule">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    //-----------------------------------------------------
+    //start Refresh Kendo Grid Funtion For Index Page
+    function KendoGridRefreshInIndexPage() {
+        //Get Grid
+        var kdGrid = $('#gridModule').data('kendoGrid');
+        kdGrid.dataSource.read();
+    }
+    //-----------------------------------------------------
+    //end Refresh Kendo Grid Funtion For Index Page
+
+    $(document).ready(function () {
+
+        //-------------------------------------------------------
+        //start of kendo grid
+
+        var _id = "#gridModule";
+        var _readUrl = '@Url.Action("ModuleRead", "Module")';
+
+        $(_id).kendoGrid({
+            dataSource: {
+                transport: {
+                    read: _readUrl
+                },
+                schema: {
+                    data: function (data) {
+                        return data.Data;
+                    },
+                    model: {
+                        fields: {
+                            ModuleId: { type: "number" },
+                            ModuleName: { type: "string" },
+                            ModuleTitle: { type: "string" },
+                            Description: { type: "string" },
+                            ApplicationId: { type: "number" },
+                            ApplicationName: { type: "string" },
+
+                            ActionLink: { type: "string" }
+                        }
+                    }, //end model
+                    total: function (data) {
+                        return data.Total;
+                    }
+                },
+                //pageSize: 20,
+                serverPaging: true,
+                serverFiltering: false,
+                serverSorting: true
+            },
+            height: 250,
+            filterable: true,
+            groupable: true,
+            sortable: true,
+            resizable: true,
+            pageable: {
+                refresh: true
+            },
+            columns: [{ field: "ModuleId", title: "ModuleId", hidden: true, filterable: false, sortable: false },
+                  { field: "ModuleName", title: "Module Name" },
+                  { field: "ModuleTitle", title: "Module Title" },
+                  { field: "Description", title: "Description" },
+                  { field: "ApplicationId", title: "ApplicationId", hidden: true, filterable: false, sortable: false },
+                  { field: "ApplicationName", title: "Application Name" },
+
+                  { field: "ActionLink", title: "Actions", width: "12%", filterable: false, sortable: false, template: "#= ActionLink #" }
+        ]
+        });
+        //end of kendo grid
+        //-------------------------------------------------------
+
+    });
+
+</script>
