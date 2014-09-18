@@ -12,12 +12,14 @@ namespace RnD.TVLSec.Controllers
 {
     public class ApplicationController : Controller
     {
+        private readonly Repository<TblCompany> _companyRepository;
         private readonly Repository<TblApplication> _applicationRepository;
 
         #region Constructor
 
-        public ApplicationController(Repository<TblApplication> applicationRepository)
+        public ApplicationController(Repository<TblCompany> companyRepository, Repository<TblApplication> applicationRepository)
         {
+            this._companyRepository = companyRepository;
             this._applicationRepository = applicationRepository;
         }
 
@@ -73,7 +75,9 @@ namespace RnD.TVLSec.Controllers
 
         public ActionResult Add()
         {
-            var viewModel = new ApplicationViewModel() { ApplicationId = 0 };
+            var companyList = SelectListItemExtension.PopulateDropdownList(_companyRepository.GetAll().ToList<TblCompany>(), "CompanyId", "CompanyName").ToList();
+
+            var viewModel = new ApplicationViewModel() { ApplicationId = 0, ddlCompanies = companyList };
             //return View();
             return PartialView("_AddOrEdit", viewModel);
         }
@@ -91,8 +95,28 @@ namespace RnD.TVLSec.Controllers
                 var application = _applicationRepository.GetAll().SingleOrDefault(x => x.ApplicationId == id);
                 if (application != null)
                 {
-                    var viewModel = new ApplicationViewModel() { ApplicationId = application.ApplicationId, ApplicationName = application.ApplicationName, Description = application.Description, ApplicationTitle = application.ApplicationTitle };
-                    return PartialView("_AddOrEdit", viewModel);
+                    var companyList = SelectListItemExtension.PopulateDropdownList(_companyRepository.GetAll().ToList<TblCompany>(), "CompanyId", "CompanyName", isEdit: true, selectedValue: application.CompanyId.ToString()).ToList();
+
+
+                    var singleOrDefaultCompany = _applicationRepository.GetAll().SingleOrDefault(x => x.CompanyId == application.CompanyId);
+
+                    if (singleOrDefaultCompany != null)
+                    {
+
+                        var viewModel = new ApplicationViewModel()
+                                            {
+                                                ApplicationId = application.ApplicationId,
+                                                ApplicationName = application.ApplicationName,
+                                                Description = application.Description,
+                                                ApplicationTitle = application.ApplicationTitle,
+                                                ddlCompanies = companyList
+                                            };
+
+
+                        return PartialView("_AddOrEdit", viewModel);
+
+                    }
+
                 }
 
                 errorViewModel = ExceptionHelper.ExceptionErrorMessageForNullObject();
@@ -118,7 +142,7 @@ namespace RnD.TVLSec.Controllers
                     //add
                     if (applicationViewModel.ApplicationId == 0 && applicationViewModel.ActionName == "Add")
                     {
-                        var model = new TblApplication() { ApplicationId = applicationViewModel.ApplicationId, ApplicationName = applicationViewModel.ApplicationName, Description = applicationViewModel.Description, ApplicationTitle = applicationViewModel.ApplicationTitle };
+                        var model = new TblApplication() { ApplicationId = applicationViewModel.ApplicationId, ApplicationName = applicationViewModel.ApplicationName, Description = applicationViewModel.Description, ApplicationTitle = applicationViewModel.ApplicationTitle, CompanyId = applicationViewModel.CompanyId };
 
                         _applicationRepository.Insert(model);
                     }
@@ -133,6 +157,7 @@ namespace RnD.TVLSec.Controllers
                             application.ApplicationName = applicationViewModel.ApplicationName;
                             application.Description = applicationViewModel.Description;
                             application.ApplicationTitle = applicationViewModel.ApplicationTitle;
+                            application.CompanyId = applicationViewModel.CompanyId;
 
                             _applicationRepository.Update(application);
 

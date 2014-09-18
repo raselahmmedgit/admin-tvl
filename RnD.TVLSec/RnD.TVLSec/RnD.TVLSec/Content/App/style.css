@@ -24,7 +24,9 @@ label
 .field-validation-error
 {
     color: #F56954 !important;
-    display: block;
+    display: inline-block !important;
+    text-align: right !important;
+    width: 95% !important;
 }
 
 .field-validation-error span
@@ -78,6 +80,40 @@ label
     margin: 0px !important;
     display: inline-block !important;
 }
+
+.form-win .radio
+{
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 25px !important;
+}
+
+.radio-label
+{
+    margin: 0 5px 0 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    float: left !important;
+    font-weight: normal !important;
+}
+
+.radio-label input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"]
+{
+    margin-left: -14px !important;
+}
+
+.radio-label span
+{
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: sub !important;
+}
+
+/*.form-win .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12
+{
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}*/
 
 /*kendo ui style
 ---------------------------------------------------------------------
@@ -172,6 +208,26 @@ label
 .form-win > .k-autocomplete, .k-combobox, .k-datepicker, .k-timepicker, .k-datetimepicker, .k-colorpicker, .k-numerictextbox, .k-dropdown, .k-selectbox, .k-textbox
 {
     width: 70% !important;
+}
+
+.k-pager-wrap .k-textbox
+{
+    width: 40px !important;
+}
+
+.k-pager-wrap .k-dropdown
+{
+    width: 54px !important;
+}
+
+/*.k-grid-pager > .k-numerictextbox, .k-dropdown, .k-selectbox, .k-textbox
+{
+    width: 50px !important;
+}*/
+
+.k-pager-wrap
+{
+    padding: 6px 0px 3px 6px !important;
 }
 
 .k-treeview .k-item

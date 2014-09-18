@@ -162,11 +162,11 @@ namespace RnD.TVLSec.Controllers
 
             if (model.ApplicationId == null && model.ModuleId == null)
             {
-                rightList = _rightRepository.GetAll().Select(x => new KendoTreeviewViewModel { Id = x.RightId.ToString(), Text = x.RightName, IsChecked = Boolean.TrueString, ParentId = null }).ToList();
+                rightList = _rightRepository.GetAll().Select(x => new KendoTreeviewViewModel { Id = x.RightId.ToString(), Text = x.RightName, IsChecked = Boolean.FalseString, ParentId = null }).ToList();
             }
             else
             {
-                rightList = _rightRepository.GetAll().Where(x => x.ApplicationId == Convert.ToInt32(model.ApplicationId) && x.ModuleId == Convert.ToInt32(model.ModuleId)).Select(x => new KendoTreeviewViewModel { Id = x.RightId.ToString(), Text = x.RightName, IsChecked = Boolean.TrueString, ParentId = null }).ToList();
+                rightList = _rightRepository.GetAll().Where(x => x.ApplicationId == Convert.ToInt32(model.ApplicationId) && x.ModuleId == Convert.ToInt32(model.ModuleId)).Select(x => new KendoTreeviewViewModel { Id = x.RightId.ToString(), Text = x.RightName, IsChecked = Boolean.FalseString, ParentId = null }).ToList();
             }
 
             return Json(rightList, JsonRequestBehavior.AllowGet);

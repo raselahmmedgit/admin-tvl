@@ -10,7 +10,7 @@
     <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RnD.KashPlugSample</RootNamespace>
+    <RootNamespace>RnD.TVLSec</RootNamespace>
     <AssemblyName>RnD.KashPlugSample</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
@@ -77,11 +77,13 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\RightController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserGroupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -103,7 +105,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\EmailNotifyViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\ErrorNotifyViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\KendoUIViewModels.cs" />
@@ -1370,6 +1374,15 @@
     <Content Include="Views\UserGroup\Index.cshtml" />
     <Content Include="Views\UserGroup\_AddOrEdit.cshtml" />
     <Content Include="Views\UserGroup\_Details.cshtml" />
+    <Content Include="Views\User\_AddOrEdit.cshtml" />
+    <Content Include="Views\User\_Details.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Company\Index.cshtml">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Views\Company\_Details.cshtml" />
+    <Content Include="Views\Company\_AddOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -1391,7 +1404,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4814</DevelopmentServerPort>
+          <DevelopmentServerPort>3401</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

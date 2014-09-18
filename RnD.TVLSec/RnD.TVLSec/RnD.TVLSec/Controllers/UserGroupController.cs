@@ -211,6 +211,7 @@ namespace RnD.TVLSec.Controllers
                         };
 
                         //_groupRepository.Insert(model);
+                        //add role to group wise
                     }
                     else if (groupViewModel.ActionName == "Edit") //edit
                     {

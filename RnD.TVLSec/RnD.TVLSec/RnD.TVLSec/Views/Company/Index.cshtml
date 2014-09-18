@@ -1,17 +1,17 @@
 ﻿@{
-    ViewBag.Title = "Menu";
+    ViewBag.Title = "Company";
 }
 <div id="indexPage">
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <a href="@Url.Action("Add", "Menu")" title="Add" class="btn btn-primary btn-sm btn-flat" id="lnkAddCommon">
+                    <a href="@Url.Action("Add", "Company")" title="Add" class="btn btn-primary btn-sm btn-flat" id="lnkAddCommon">
                         <i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a></div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
                     <div id="gridZone">
-                        <div id="gridMenu">
+                        <div id="gridCompany">
                         </div>
                     </div>
                 </div>
@@ -23,27 +23,11 @@
 </div>
 <script type="text/javascript">
 
-    function MenuWindowComplete() {
-
-        var actionName = $("#ActionName").val();
-
-        if (actionName == "Add") {
-
-            var parentMenu = $("#ParentMenuId").data("kendoDropDownList");
-            parentMenu.dataSource.read();
-
-        }
-
-        CloseAppProgressWindow();
-
-    }
-
-
     //-----------------------------------------------------
     //start Refresh Kendo Grid Funtion For Index Page
     function KendoGridRefreshInIndexPage() {
         //Get Grid
-        var kdGrid = $('#gridMenu').data('kendoGrid');
+        var kdGrid = $('#gridCompany').data('kendoGrid');
         kdGrid.dataSource.read();
     }
     //-----------------------------------------------------
@@ -54,8 +38,8 @@
         //-------------------------------------------------------
         //start of kendo grid
 
-        var _id = "#gridMenu";
-        var _readUrl = '@Url.Action("MenuRead", "Menu")';
+        var _id = "#gridCompany";
+        var _readUrl = '@Url.Action("CompanyRead", "Company")';
 
         $(_id).kendoGrid({
             dataSource: {
@@ -68,19 +52,11 @@
                     },
                     model: {
                         fields: {
-                            MenuId: { type: "number" },
-                            MenuName: { type: "string" },
-                            MenuCaption: { type: "string" },
-                            PageUrl: { type: "string" },
-                            SerialNo: { type: "number" },
-                            OrderNo: { type: "number" },
-                            ParentMenuId: { type: "number" },
-                            ParentMenuName: { type: "string" },
-                            ApplicationId: { type: "number" },
-                            ApplicationName: { type: "string" },
-                            ModuleId: { type: "number" },
-                            ModuleName: { type: "string" },
-
+                            CompanyId: { type: "number" },
+                            CompanyName: { type: "string" },
+                            CompanyTitle: { type: "string" },
+                            Description: { type: "string" },
+                            
                             ActionLink: { type: "string" }
                         }
                     }, //end model
@@ -105,19 +81,11 @@
                 refresh: true,
                 pageSizes: true
             },
-            columns: [{ field: "MenuId", title: "MenuId", hidden: true, filterable: false, sortable: false },
-                  { field: "MenuName", title: "Menu Name" },
-                  { field: "MenuCaption", title: "Menu Caption" },
-                  { field: "PageUrl", title: "Page Url" },
-                  { field: "SerialNo", title: "Serial No" },
-                  { field: "OrderNo", title: "Order No" },
-                  { field: "ParentMenuId", title: "ParentMenuId", hidden: true, filterable: false, sortable: false },
-                  { field: "ParentMenuName", title: "ParentMenu Name" },
-                  { field: "ApplicationId", title: "ApplicationId", hidden: true, filterable: false, sortable: false },
-                  { field: "ApplicationName", title: "Application Name" },
-                  { field: "ModuleId", title: "ModuleId", hidden: true, filterable: false, sortable: false },
-                  { field: "ModuleName", title: "Module Name" },
-
+            columns: [{ field: "CompanyId", title: "CompanyId", hidden: true, filterable: false, sortable: false },
+                  { field: "CompanyName", title: "Company Name" },
+                  { field: "CompanyTitle", title: "Company Title" },
+                  { field: "Description", title: "Description" },
+                  
                   { field: "ActionLink", title: "Actions", width: "12%", filterable: false, sortable: false, template: "#= ActionLink #" }
         ]
         });

@@ -1,4 +1,4 @@
-﻿@model RnD.TVLSec.ViewModels.GroupViewModel
+﻿@model RnD.TVLSec.ViewModels.UserViewModel
 @using (Ajax.BeginForm(null, null, null, new { @id = "appCommonWindowForm" }))
 {
     <div id="addOrEditPage" class="addOrEditPage form-win col-xs-12">
@@ -8,19 +8,75 @@
         </div>
         <div class="row ">
             <div class="col-xs-6">
-                @Html.HiddenFor(model => model.GroupId)
+                @Html.HiddenFor(model => model.UserId)
                 @Html.HiddenFor(model => model.AreaName)
                 @Html.HiddenFor(model => model.ControllerName)
                 @Html.HiddenFor(model => model.ActionName)
                 <div class="form-group">
-                    @Html.LabelFor(model => model.GroupName)
-                    @Html.TextBoxFor(model => model.GroupName, new { @style = "width: 95% !important" })
-                    @Html.ValidationMessageFor(model => model.GroupName)
+                    @Html.LabelFor(model => model.UserName)
+                    @Html.TextBoxFor(model => model.UserName, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.UserName)
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Description)
-                    @Html.TextAreaFor(model => model.Description, new { @style = "width: 95% !important" })
-                    @Html.ValidationMessageFor(model => model.Description)
+                    @Html.LabelFor(model => model.LoginId)
+                    @Html.TextBoxFor(model => model.LoginId, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.LoginId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password)
+                    @Html.PasswordFor(model => model.Password, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PasswordConfirm)
+                    @Html.PasswordFor(model => model.PasswordConfirm, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.PasswordConfirm)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailAddress)
+                    @Html.TextBoxFor(model => model.EmailAddress, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.EmailAddress)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone)
+                    @Html.TextBoxFor(model => model.Phone, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.Phone)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChangePasswordAtFirstLogin)
+                    <div class="radio">
+                        <label class="radio-label">@Html.RadioButtonFor(model => model.ChangePasswordAtFirstLogin, !Model.ChangePasswordAtFirstLogin)
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-label">@Html.RadioButtonFor(model => model.ChangePasswordAtFirstLogin, Model.ChangePasswordAtFirstLogin)
+                            <span>No</span>
+                        </label>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ChangePasswordAtFirstLogin)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status)
+                    <div class="radio">
+                        <label class="radio-label">@Html.RadioButtonFor(model => model.Status, !Model.Status)
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-label">@Html.RadioButtonFor(model => model.Status, Model.Status)
+                            <span>No</span>
+                        </label>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Status)
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GroupId)
+                    @Html.DropDownList("GroupId", Model.ddlGroups, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.GroupId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeId)
+                    @Html.DropDownList("EmployeeId", Model.ddlEmployees, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.EmployeeId)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApplicationId)
@@ -37,22 +93,24 @@
                         name="btnSearchGroup">
                         <i class="fa fa-search"></i>&nbsp;&nbsp;Search</button>
                 </div>
-            </div>
-            <div id="treeviewScroll" class="col-xs-6">
-                <div id="buttonExpandCollapseZone" class="buttonZone">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewExpand"
-                            name="btnTreeviewExpand">
-                            <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Expand All</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewCollapse"
-                            name="btnTreeviewCollapse">
-                            <i class="fa fa-minus-square-o"></i>&nbsp;&nbsp;Collapse All</button></div>
-                </div>
-                <div id="treeviewZone">
-                    <div class="treeviewRoleZone">
-                        <label>
-                            Roles</label>
-                        <div id="treeviewRoles">
+                <div class="form-group">
+                    <div id="treeviewScroll" style="width: 280px !important; height: 190px !important;">
+                        <div id="buttonExpandCollapseZone" class="buttonZone">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewExpand"
+                                    name="btnTreeviewExpand">
+                                    <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Expand All</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewCollapse"
+                                    name="btnTreeviewCollapse">
+                                    <i class="fa fa-minus-square-o"></i>&nbsp;&nbsp;Collapse All</button></div>
+                        </div>
+                        <div id="treeviewZone">
+                            <div class="treeviewRoleZone">
+                                <label>
+                                    Roles</label>
+                                <div id="treeviewRoles">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

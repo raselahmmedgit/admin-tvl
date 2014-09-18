@@ -64,7 +64,7 @@
                         return data.Total;
                     }
                 },
-                //pageSize: 20,
+                pageSize: 5,
                 serverPaging: true,
                 serverFiltering: false,
                 serverSorting: true
@@ -73,9 +73,13 @@
             filterable: true,
             groupable: true,
             sortable: true,
-            resizable: true,
             pageable: {
-                refresh: true
+                input: true,
+                numeric: true,
+                info: true,
+                previousNext: true,
+                refresh: true,
+                pageSizes: true
             },
             columns: [{ field: "ApplicationId", title: "ApplicationId", hidden: true, filterable: false, sortable: false },
                   { field: "ApplicationName", title: "Application Name" },

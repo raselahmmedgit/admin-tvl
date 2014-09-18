@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Web.Mvc;
 
 namespace RnD.TVLSec.ViewModels
 {
@@ -26,5 +28,16 @@ namespace RnD.TVLSec.ViewModels
         [Required(ErrorMessage = "Application Title is required")]
         [MaxLength(200)]
         public string ApplicationTitle { get; set; }
+
+
+        [DisplayName("Company: ")]
+        [Required(ErrorMessage = "Select Company.")]
+        [Range(1, long.MaxValue, ErrorMessage = "Select Company.")]
+        public int CompanyId { get; set; }
+        [DisplayName("Company Name")]
+        public string CompanyName { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual CompanyViewModel CompanyViewModel { get; set; }
+        public List<SelectListItem> ddlCompanies { get; set; }
     }
 }

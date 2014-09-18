@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="row ">
-            <div class="pull-left">
+            <div class="col-xs-6">
                 @Html.HiddenFor(model => model.RoleId)
                 @Html.HiddenFor(model => model.AreaName)
                 @Html.HiddenFor(model => model.ControllerName)
@@ -33,7 +33,7 @@
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
             </div>
-            <div id="treeviewScroll" class="pull-right">
+            <div id="treeviewScroll" class="col-xs-6">
                 <div id="buttonExpandCollapseZone" class="buttonZone">
                     <div class="form-group">
                         <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewExpand"

@@ -1,5 +1,5 @@
-﻿@model RnD.TVLSec.ViewModels.ApplicationViewModel
-@using (Ajax.BeginForm("Save", "Application", null,
+﻿@model RnD.TVLSec.ViewModels.CompanyViewModel
+@using (Ajax.BeginForm("Save", "Company", null,
         new AjaxOptions
         {
             UpdateTargetId = "updateTargetId",
@@ -16,29 +16,19 @@
             </div>
         </div>
         <div class="row ">
-            @Html.HiddenFor(model => model.ApplicationId)
+            @Html.HiddenFor(model => model.CompanyId)
             @Html.HiddenFor(model => model.AreaName)
             @Html.HiddenFor(model => model.ControllerName)
             @Html.HiddenFor(model => model.ActionName)
             <div class="form-group">
-                @Html.LabelFor(model => model.CompanyId)
-                @Html.DropDownList("CompanyId", Model.ddlCompanies)
-                @Html.ValidationMessageFor(model => model.CompanyId)
+                @Html.LabelFor(model => model.CompanyName)
+                @Html.TextBoxFor(model => model.CompanyName)
+                @Html.ValidationMessageFor(model => model.CompanyName)
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.ApplicationName)
-                @Html.TextBoxFor(model => model.ApplicationName)
-                @Html.ValidationMessageFor(model => model.ApplicationName)
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApplicationTitle)
-                @Html.TextBoxFor(model => model.ApplicationTitle)
-                @Html.ValidationMessageFor(model => model.ApplicationTitle)
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Description)
-                @Html.TextAreaFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
+                @Html.LabelFor(model => model.Address)
+                @Html.TextAreaFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
             </div>
         </div>
         <div class="row form-hr">

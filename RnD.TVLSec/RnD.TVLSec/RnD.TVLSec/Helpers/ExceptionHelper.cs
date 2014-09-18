@@ -18,7 +18,7 @@ namespace RnD.TVLSec.Helpers
                 if (inner is System.Data.Common.DbException)
                     message = "Database is currently experiencing problems. " + inner.Message;
                 else if (inner is System.Data.UpdateException)
-                    message = "Datebase is currently updating problem.";
+                    message = "Database is currently updating problem.";
                 else if (inner is System.Data.EntityException)
                     message = "Entity is problem.";
                 else if (inner is NullReferenceException)

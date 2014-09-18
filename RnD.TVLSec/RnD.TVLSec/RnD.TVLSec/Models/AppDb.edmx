@@ -7,9 +7,33 @@
     <Schema Namespace="AppDbContext.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="AppDbContextStoreContainer">
           <EntitySet Name="TblApplications" EntityType="AppDbContext.Store.TblApplications" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TblCompany" EntityType="AppDbContext.Store.TblCompany" store:Type="Tables" store:Schema="dbo" store:Name="TblCompany">
+            <DefiningQuery>SELECT 
+      [TblCompany].[CompanyId] AS [CompanyId], 
+      [TblCompany].[CompanyName] AS [CompanyName], 
+      [TblCompany].[Address] AS [Address], 
+      [TblCompany].[CreatedBy] AS [CreatedBy], 
+      [TblCompany].[UpdatedBy] AS [UpdatedBy], 
+      [TblCompany].[CreatedDate] AS [CreatedDate], 
+      [TblCompany].[UpdatedDate] AS [UpdatedDate]
+      FROM [dbo].[TblCompany] AS [TblCompany]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TblEmployee" EntityType="AppDbContext.Store.TblEmployee" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TblGroupInRoles" EntityType="AppDbContext.Store.TblGroupInRoles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TblGroups" EntityType="AppDbContext.Store.TblGroups" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TblMenus" EntityType="AppDbContext.Store.TblMenus" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TblMenusInRoles" EntityType="AppDbContext.Store.TblMenusInRoles" store:Type="Tables" store:Schema="dbo" store:Name="TblMenusInRoles">
+            <DefiningQuery>SELECT 
+      [TblMenusInRoles].[RoleId] AS [RoleId], 
+      [TblMenusInRoles].[MenuId] AS [MenuId], 
+      [TblMenusInRoles].[OPAdd] AS [OPAdd], 
+      [TblMenusInRoles].[OPEdit] AS [OPEdit], 
+      [TblMenusInRoles].[OPDelete] AS [OPDelete], 
+      [TblMenusInRoles].[OPCancel] AS [OPCancel], 
+      [TblMenusInRoles].[OPPrint] AS [OPPrint], 
+      [TblMenusInRoles].[MenuRoleId] AS [MenuRoleId]
+      FROM [dbo].[TblMenusInRoles] AS [TblMenusInRoles]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TblModules" EntityType="AppDbContext.Store.TblModules" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TblRights" EntityType="AppDbContext.Store.TblRights" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TblRightsInRoles" EntityType="AppDbContext.Store.TblRightsInRoles" store:Type="Tables" Schema="dbo" />
@@ -22,12 +46,37 @@
         </EntityContainer>
         <EntityType Name="TblApplications">
           <Key>
-            <PropertyRef Name="ApplicationName" />
+            <PropertyRef Name="ApplicationId" />
           </Key>
           <Property Name="ApplicationId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ApplicationName" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="Description" Type="varchar" MaxLength="500" />
           <Property Name="ApplicationTitle" Type="varchar" MaxLength="100" />
+          <Property Name="CompanyId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view '@NBR_TESTDB.dbo.TblCompany' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="TblCompany">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="CompanyName" />
+          </Key>
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TblEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="250" />
+          <Property Name="CompanyId" Type="int" />
         </EntityType>
         <EntityType Name="TblGroupInRoles">
           <Key>
@@ -62,6 +111,29 @@
           <Property Name="PageUrl" Type="varchar" MaxLength="500" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
           <Property Name="OrderNo" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view '@NBR_TESTDB.dbo.TblMenusInRoles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="TblMenusInRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="OPAdd" />
+            <PropertyRef Name="OPEdit" />
+            <PropertyRef Name="OPDelete" />
+            <PropertyRef Name="OPCancel" />
+            <PropertyRef Name="OPPrint" />
+            <PropertyRef Name="MenuRoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="OPAdd" Type="bit" Nullable="false" />
+          <Property Name="OPEdit" Type="bit" Nullable="false" />
+          <Property Name="OPDelete" Type="bit" Nullable="false" />
+          <Property Name="OPCancel" Type="bit" Nullable="false" />
+          <Property Name="OPPrint" Type="bit" Nullable="false" />
+          <Property Name="MenuRoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="TblModules">
           <Key>
@@ -115,19 +187,20 @@
         </EntityType>
         <EntityType Name="TblSessions">
           <Key>
-            <PropertyRef Name="SESSIONID" />
+            <PropertyRef Name="SessionId" />
           </Key>
-          <Property Name="SESSIONID" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="SessionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SessionCode" Type="varchar" Nullable="false" MaxLength="100" />
           <Property Name="ApplicationId" Type="int" />
-          <Property Name="CREATED" Type="datetime" />
-          <Property Name="EXPIRES" Type="datetime" />
-          <Property Name="LOCKDATE" Type="datetime" />
-          <Property Name="LOCKID" Type="int" />
-          <Property Name="TIMEOUT" Type="int" />
-          <Property Name="LOCKED" Type="int" />
-          <Property Name="SESSIONITEMS" Type="varchar" MaxLength="200" />
-          <Property Name="FLAGS" Type="int" />
-          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Expires" Type="datetime" />
+          <Property Name="LockDate" Type="datetime" />
+          <Property Name="LockId" Type="int" />
+          <Property Name="TimeOut" Type="int" />
+          <Property Name="Locked" Type="int" />
+          <Property Name="SessionItems" Type="varchar" MaxLength="200" />
+          <Property Name="Flags" Type="int" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="ApplicationName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="TblUsers">
@@ -135,6 +208,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="200" />
           <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="LastName" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="LoginId" Type="varchar" Nullable="false" MaxLength="50" />
@@ -155,7 +229,7 @@
           <Property Name="FailedPasswordAttemptCount" Type="int" />
           <Property Name="Comment" Type="varchar" MaxLength="3000" />
           <Property Name="ApplicationId" Type="int" Nullable="false" />
-          <Property Name="EmpId" Type="varchar" MaxLength="20" />
+          <Property Name="EmployeeId" Type="int" />
           <Property Name="ChangePasswordAtFirstLogin" Type="bit" />
         </EntityType>
         <EntityType Name="TblUsersInCompanys">
@@ -164,7 +238,7 @@
           </Key>
           <Property Name="UserCompanyId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="int" />
-          <Property Name="CompanyId" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyId" Type="int" />
           <Property Name="EmpId" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TblUsersInRoles">
@@ -181,10 +255,13 @@
       <Schema Namespace="AppDbContext" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="AppDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TblApplications" EntityType="AppDbContext.TblApplication" />
-          <EntitySet Name="TblModules" EntityType="AppDbContext.TblModule" />
-          <EntitySet Name="TblMenus" EntityType="AppDbContext.TblMenu" />
+          <EntitySet Name="TblCompanies" EntityType="AppDbContext.TblCompany" />
+          <EntitySet Name="TblEmployees" EntityType="AppDbContext.TblEmployee" />
           <EntitySet Name="TblGroupInRoles" EntityType="AppDbContext.TblGroupInRole" />
           <EntitySet Name="TblGroups" EntityType="AppDbContext.TblGroup" />
+          <EntitySet Name="TblMenus" EntityType="AppDbContext.TblMenu" />
+          <EntitySet Name="TblMenusInRoles" EntityType="AppDbContext.TblMenusInRole" />
+          <EntitySet Name="TblModules" EntityType="AppDbContext.TblModule" />
           <EntitySet Name="TblRights" EntityType="AppDbContext.TblRight" />
           <EntitySet Name="TblRightsInRoles" EntityType="AppDbContext.TblRightsInRole" />
           <EntitySet Name="TblRoleGroups" EntityType="AppDbContext.TblRoleGroup" />
@@ -196,23 +273,50 @@
         </EntityContainer>
         <EntityType Name="TblApplication">
           <Key>
-            <PropertyRef Name="ApplicationName" />
-          </Key>
-          <Property Name="ApplicationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ApplicationName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="ApplicationTitle" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="TblModule">
-          <Key>
             <PropertyRef Name="ApplicationId" />
-            <PropertyRef Name="ModuleName" />
           </Key>
-          <Property Name="ModuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModuleTitle" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
-          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
-          <Property Name="ModuleName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Type="Int32" Name="ApplicationId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="ApplicationName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ApplicationTitle" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CompanyId" />
+        </EntityType>
+        <EntityType Name="TblCompany">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="CompanyName" />
+          </Key>
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CreatedBy" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UpdatedBy" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CreatedDate" />
+          <Property Type="DateTime" Name="UpdatedDate" />
+        </EntityType>
+        <EntityType Name="TblEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Type="Int32" Name="EmployeeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="EmployeeName" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CompanyId" />
+        </EntityType>
+        <EntityType Name="TblGroupInRole">
+          <Key>
+            <PropertyRef Name="GroupRoleId" />
+          </Key>
+          <Property Type="Int32" Name="GroupRoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="GroupId" Nullable="false" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TblGroup">
+          <Key>
+            <PropertyRef Name="GroupName" />
+          </Key>
+          <Property Type="Int32" Name="GroupId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="GroupName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TblMenu">
           <Key>
@@ -232,21 +336,36 @@
           <Property Type="Int32" Name="ModuleId" Nullable="false" />
           <Property Type="Int32" Name="OrderNo" />
         </EntityType>
-        <EntityType Name="TblGroupInRole">
+        <EntityType Name="TblMenusInRole">
           <Key>
-            <PropertyRef Name="GroupRoleId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="OPAdd" />
+            <PropertyRef Name="OPEdit" />
+            <PropertyRef Name="OPDelete" />
+            <PropertyRef Name="OPCancel" />
+            <PropertyRef Name="OPPrint" />
+            <PropertyRef Name="MenuRoleId" />
           </Key>
-          <Property Type="Int32" Name="GroupRoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="GroupId" Nullable="false" />
           <Property Type="Int32" Name="RoleId" Nullable="false" />
+          <Property Type="Int32" Name="MenuId" Nullable="false" />
+          <Property Type="Boolean" Name="OPAdd" Nullable="false" />
+          <Property Type="Boolean" Name="OPEdit" Nullable="false" />
+          <Property Type="Boolean" Name="OPDelete" Nullable="false" />
+          <Property Type="Boolean" Name="OPCancel" Nullable="false" />
+          <Property Type="Boolean" Name="OPPrint" Nullable="false" />
+          <Property Type="Int32" Name="MenuRoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
-        <EntityType Name="TblGroup">
+        <EntityType Name="TblModule">
           <Key>
-            <PropertyRef Name="GroupName" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="ModuleName" />
           </Key>
-          <Property Type="Int32" Name="GroupId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="GroupName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Description" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ModuleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="ModuleTitle" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ApplicationId" Nullable="false" />
+          <Property Type="String" Name="ModuleName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TblRight">
           <Key>
@@ -289,19 +408,20 @@
         </EntityType>
         <EntityType Name="TblSession">
           <Key>
-            <PropertyRef Name="SESSIONID" />
+            <PropertyRef Name="SessionId" />
           </Key>
-          <Property Type="String" Name="SESSIONID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="SessionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="SessionCode" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ApplicationId" />
-          <Property Type="DateTime" Name="CREATED" />
-          <Property Type="DateTime" Name="EXPIRES" />
-          <Property Type="DateTime" Name="LOCKDATE" />
-          <Property Type="Int32" Name="LOCKID" />
-          <Property Type="Int32" Name="TIMEOUT" />
-          <Property Type="Int32" Name="LOCKED" />
-          <Property Type="String" Name="SESSIONITEMS" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="FLAGS" />
-          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Created" />
+          <Property Type="DateTime" Name="Expires" />
+          <Property Type="DateTime" Name="LockDate" />
+          <Property Type="Int32" Name="LockId" />
+          <Property Type="Int32" Name="TimeOut" />
+          <Property Type="Int32" Name="Locked" />
+          <Property Type="String" Name="SessionItems" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Flags" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
           <Property Type="String" Name="ApplicationName" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TblUser">
@@ -309,6 +429,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="LoginId" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -329,7 +450,7 @@
           <Property Type="Int32" Name="FailedPasswordAttemptCount" />
           <Property Type="String" Name="Comment" MaxLength="3000" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ApplicationId" Nullable="false" />
-          <Property Type="String" Name="EmpId" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="EmployeeId" />
           <Property Type="Boolean" Name="ChangePasswordAtFirstLogin" />
         </EntityType>
         <EntityType Name="TblUsersInCompany">
@@ -338,7 +459,7 @@
           </Key>
           <Property Type="Int32" Name="UserCompanyId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="UserId" />
-          <Property Type="String" Name="CompanyId" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CompanyId" />
           <Property Type="String" Name="EmpId" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TblUsersInRole">
@@ -349,7 +470,7 @@
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="Int32" Name="RoleId" Nullable="false" />
         </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -358,21 +479,51 @@
           <EntitySetMapping Name="TblApplications">
             <EntityTypeMapping TypeName="AppDbContext.TblApplication">
               <MappingFragment StoreEntitySet="TblApplications">
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="ApplicationTitle" ColumnName="ApplicationTitle" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TblModules">
-            <EntityTypeMapping TypeName="AppDbContext.TblModule">
-              <MappingFragment StoreEntitySet="TblModules">
-                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
-                <ScalarProperty Name="ModuleTitle" ColumnName="ModuleTitle" />
+          <EntitySetMapping Name="TblCompanies">
+            <EntityTypeMapping TypeName="AppDbContext.TblCompany">
+              <MappingFragment StoreEntitySet="TblCompany">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblEmployees">
+            <EntityTypeMapping TypeName="AppDbContext.TblEmployee">
+              <MappingFragment StoreEntitySet="TblEmployee">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblGroupInRoles">
+            <EntityTypeMapping TypeName="AppDbContext.TblGroupInRole">
+              <MappingFragment StoreEntitySet="TblGroupInRoles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="GroupRoleId" ColumnName="GroupRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblGroups">
+            <EntityTypeMapping TypeName="AppDbContext.TblGroup">
+              <MappingFragment StoreEntitySet="TblGroups">
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -393,21 +544,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TblGroupInRoles">
-            <EntityTypeMapping TypeName="AppDbContext.TblGroupInRole">
-              <MappingFragment StoreEntitySet="TblGroupInRoles">
+          <EntitySetMapping Name="TblMenusInRoles">
+            <EntityTypeMapping TypeName="AppDbContext.TblMenusInRole">
+              <MappingFragment StoreEntitySet="TblMenusInRoles">
+                <ScalarProperty Name="MenuRoleId" ColumnName="MenuRoleId" />
+                <ScalarProperty Name="OPPrint" ColumnName="OPPrint" />
+                <ScalarProperty Name="OPCancel" ColumnName="OPCancel" />
+                <ScalarProperty Name="OPDelete" ColumnName="OPDelete" />
+                <ScalarProperty Name="OPEdit" ColumnName="OPEdit" />
+                <ScalarProperty Name="OPAdd" ColumnName="OPAdd" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="GroupRoleId" ColumnName="GroupRoleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TblGroups">
-            <EntityTypeMapping TypeName="AppDbContext.TblGroup">
-              <MappingFragment StoreEntitySet="TblGroups">
+          <EntitySetMapping Name="TblModules">
+            <EntityTypeMapping TypeName="AppDbContext.TblModule">
+              <MappingFragment StoreEntitySet="TblModules">
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="ModuleTitle" ColumnName="ModuleTitle" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -456,17 +614,18 @@
             <EntityTypeMapping TypeName="AppDbContext.TblSession">
               <MappingFragment StoreEntitySet="TblSessions">
                 <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FLAGS" ColumnName="FLAGS" />
-                <ScalarProperty Name="SESSIONITEMS" ColumnName="SESSIONITEMS" />
-                <ScalarProperty Name="LOCKED" ColumnName="LOCKED" />
-                <ScalarProperty Name="TIMEOUT" ColumnName="TIMEOUT" />
-                <ScalarProperty Name="LOCKID" ColumnName="LOCKID" />
-                <ScalarProperty Name="LOCKDATE" ColumnName="LOCKDATE" />
-                <ScalarProperty Name="EXPIRES" ColumnName="EXPIRES" />
-                <ScalarProperty Name="CREATED" ColumnName="CREATED" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Flags" ColumnName="Flags" />
+                <ScalarProperty Name="SessionItems" ColumnName="SessionItems" />
+                <ScalarProperty Name="Locked" ColumnName="Locked" />
+                <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+                <ScalarProperty Name="LockId" ColumnName="LockId" />
+                <ScalarProperty Name="LockDate" ColumnName="LockDate" />
+                <ScalarProperty Name="Expires" ColumnName="Expires" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-                <ScalarProperty Name="SESSIONID" ColumnName="SESSIONID" />
+                <ScalarProperty Name="SessionCode" ColumnName="SessionCode" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -474,7 +633,7 @@
             <EntityTypeMapping TypeName="AppDbContext.TblUser">
               <MappingFragment StoreEntitySet="TblUsers">
                 <ScalarProperty Name="ChangePasswordAtFirstLogin" ColumnName="ChangePasswordAtFirstLogin" />
-                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
@@ -495,6 +654,7 @@
                 <ScalarProperty Name="LoginId" ColumnName="LoginId" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -539,19 +699,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="AppDb">
-        <EntityTypeShape EntityType="AppDbContext.TblApplication" Width="1.5" PointX="0.75" PointY="0.75" Height="1.787985026041667" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppDbContext.TblModule" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9802864583333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppDbContext.TblMenu" Width="1.5" PointX="0.75" PointY="3.75" Height="3.1340950520833335" />
-        <EntityTypeShape EntityType="AppDbContext.TblGroupInRole" Width="1.5" PointX="3.75" PointY="3.75" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="AppDbContext.TblGroup" Width="1.5" PointX="5.75" PointY="0.75" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="AppDbContext.TblRight" Width="1.5" PointX="5.75" PointY="3.75" Height="2.1725878906249996" />
-        <EntityTypeShape EntityType="AppDbContext.TblRightsInRole" Width="1.5" PointX="3.75" PointY="6.75" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="AppDbContext.TblRoleGroup" Width="1.5" PointX="5.75" PointY="6.75" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="AppDbContext.TblRole" Width="1.5" PointX="7.75" PointY="0.75" Height="1.9802864583333317" />
-        <EntityTypeShape EntityType="AppDbContext.TblSession" Width="1.5" PointX="0.75" PointY="7.75" Height="3.3263964843750031" />
-        <EntityTypeShape EntityType="AppDbContext.TblUser" Width="1.5" PointX="7.75" PointY="3.75" Height="5.4417122395833317" />
-        <EntityTypeShape EntityType="AppDbContext.TblUsersInCompany" Width="1.5" PointX="9.75" PointY="0.75" Height="1.7879850260416674" />
-        <EntityTypeShape EntityType="AppDbContext.TblUsersInRole" Width="1.5" PointX="2.75" PointY="9.75" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="AppDbContext.TblApplication" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9802864583333388" />
+        <EntityTypeShape EntityType="AppDbContext.TblCompany" Width="1.5" PointX="2.75" PointY="0.75" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="AppDbContext.TblEmployee" Width="1.5" PointX="4.75" PointY="0.75" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="AppDbContext.TblGroupInRole" Width="1.5" PointX="0.75" PointY="4.75" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="AppDbContext.TblGroup" Width="1.5" PointX="2.75" PointY="4.75" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="AppDbContext.TblMenu" Width="1.5" PointX="4.75" PointY="3.75" Height="3.1340950520833282" />
+        <EntityTypeShape EntityType="AppDbContext.TblMenusInRole" Width="1.5" PointX="6.75" PointY="0.75" Height="2.5571907552083246" />
+        <EntityTypeShape EntityType="AppDbContext.TblModule" Width="1.5" PointX="6.75" PointY="4.75" Height="1.9802864583333246" />
+        <EntityTypeShape EntityType="AppDbContext.TblRight" Width="1.5" PointX="0.75" PointY="7.75" Height="2.1725878906250102" />
+        <EntityTypeShape EntityType="AppDbContext.TblRightsInRole" Width="1.5" PointX="2.75" PointY="7.75" Height="1.5956835937500102" />
+        <EntityTypeShape EntityType="AppDbContext.TblRoleGroup" Width="1.5" PointX="4.75" PointY="7.75" Height="1.5956835937500102" />
+        <EntityTypeShape EntityType="AppDbContext.TblRole" Width="1.5" PointX="6.75" PointY="7.75" Height="1.9802864583333246" />
+        <EntityTypeShape EntityType="AppDbContext.TblSession" Width="1.5" PointX="8.75" PointY="0.75" Height="3.5186979166666674" />
+        <EntityTypeShape EntityType="AppDbContext.TblUser" Width="1.5" PointX="8.75" PointY="5.75" Height="5.63401367187501" />
+        <EntityTypeShape EntityType="AppDbContext.TblUsersInCompany" Width="1.5" PointX="10.75" PointY="0.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="AppDbContext.TblUsersInRole" Width="1.5" PointX="0.75" PointY="10.75" Height="1.5956835937500102" />
       </Diagram>
     </Diagrams>
   </Designer>

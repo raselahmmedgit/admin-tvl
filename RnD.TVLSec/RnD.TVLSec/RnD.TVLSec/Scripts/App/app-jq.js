@@ -375,6 +375,8 @@ function AppCommonWindowFormValidation(fromId) {
 
 function LoadAddOrEditAppCommonWindow(viewUrl, windowTitle, windowForm) {
 
+    OpenAppProgressWindow();
+
     TitleAppCommonWindow(windowTitle);
 
     $.get(viewUrl, function (data) {
@@ -386,12 +388,17 @@ function LoadAddOrEditAppCommonWindow(viewUrl, windowTitle, windowForm) {
 
         //kendo ui window open
         OpenAppCommonWindow();
+
+        CloseAppProgressWindow();
+
     });
 
 };
 
 function LoadDetailsAppCommonWindow(viewUrl, windowTitle) {
 
+    OpenAppProgressWindow();
+
     TitleAppCommonWindow(windowTitle);
 
     $.get(viewUrl, function (data) {
@@ -401,11 +408,16 @@ function LoadDetailsAppCommonWindow(viewUrl, windowTitle) {
 
         //kendo ui window open
         OpenAppCommonWindow();
+
+        CloseAppProgressWindow();
+
     });
 
 };
 
 function LoadAppCommonWindow(viewUrl, windowTitle, windowForm) {
+
+    OpenAppProgressWindow();
 
     TitleAppCommonWindow(windowTitle);
 
@@ -418,11 +430,16 @@ function LoadAppCommonWindow(viewUrl, windowTitle, windowForm) {
 
         //kendo ui window open
         OpenAppCommonWindow();
+
+        CloseAppProgressWindow();
+
     });
 
 };
 
 function LoadAppCommonWindowWithoutForm(viewUrl, windowTitle) {
+
+    OpenAppProgressWindow();
 
     TitleAppCommonWindow(windowTitle);
 
@@ -433,6 +450,8 @@ function LoadAppCommonWindowWithoutForm(viewUrl, windowTitle) {
 
         //kendo ui window open
         OpenAppCommonWindow();
+
+        CloseAppProgressWindow();
     });
 
 };
@@ -549,11 +568,11 @@ function LoadAppMessageWindow(messageType, messageText) {
 
     ContentAppMessageWindow(windowContent);
 
-    //kendo ui progress window close
-    CloseAppProgressWindow();
-
     //kendo ui message window open
     OpenAppMessageWindow();
+
+    //kendo ui progress window close
+    CloseAppProgressWindow();
 
 };
 
@@ -571,6 +590,9 @@ function LoadAppMessageWindowForAjaxSuccess(messageType, messageText) {
     //kendo ui message window open
     OpenAppMessageWindow();
 
+    //kendo ui progress window close
+    CloseAppProgressWindow();
+
 };
 
 //Info Message Window
@@ -584,11 +606,11 @@ function LoadInfoAppMessageWindowWithText(messageText) {
 
     ContentAppMessageWindow(windowContent);
 
-    //kendo ui progress window close
-    CloseAppProgressWindow();
-
     //kendo ui message window open
     OpenAppMessageWindow();
+
+    //kendo ui progress window close
+    CloseAppProgressWindow();
 
 };
 
@@ -603,11 +625,11 @@ function LoadWarnAppMessageWindowWithText(messageText) {
 
     ContentAppMessageWindow(windowContent);
 
-    //kendo ui progress window close
-    CloseAppProgressWindow();
-
     //kendo ui message window open
     OpenAppMessageWindow();
+
+    //kendo ui progress window close
+    CloseAppProgressWindow();
 
 };
 
@@ -622,11 +644,11 @@ function LoadSuccessAppMessageWindowWithText(messageText) {
 
     ContentAppMessageWindow(windowContent);
 
-    //kendo ui progress window close
-    CloseAppProgressWindow();
-
     //kendo ui message window open
     OpenAppMessageWindow();
+
+    //kendo ui progress window close
+    CloseAppProgressWindow();
 
 };
 
@@ -641,11 +663,11 @@ function LoadErrorAppMessageWindowWithText(messageText) {
 
     ContentAppMessageWindow(windowContent);
 
-    //kendo ui progress window close
-    CloseAppProgressWindow();
-
     //kendo ui message window open
     OpenAppMessageWindow();
+
+    //kendo ui progress window close
+    CloseAppProgressWindow();
 
 };
 
@@ -744,7 +766,9 @@ $(document).ready(function () {
         modal: true,
         resizable: false,
         minHeight: 100,
+        //height: 550,
         minWidth: 350,
+        //maxWidth: 800,
         pinned: true,
         position: { top: 100 },
         visible: false

@@ -41,5 +41,9 @@ namespace RnD.TVLSec.ViewModels
         public virtual ModuleViewModel ModuleViewModel { get; set; }
         public List<SelectListItem> ddlModules { get; set; }
 
+        public List<RoleViewModel> Roles { get; set; }
+
+        public List<KendoTreeviewViewModel> RoleViewModelList { get; set; }
+
     }
 }
