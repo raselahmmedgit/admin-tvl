@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Menu";
+}
+<div id="indexPage">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <a href="@Url.Action("Add", "Menu")" title="Add" class="btn btn-primary btn-sm btn-flat" id="lnkAddCommon">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a></div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <div id="gridZone">
+                        <div id="gridMenu">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function MenuWindowComplete() {
+
+        var actionName = $("#ActionName").val();
+
+        if (actionName == "Add") {
+
+            var parentMenu = $("#ParentMenuId").data("kendoDropDownList");
+            parentMenu.dataSource.read();
+
+        }
+
+        CloseAppProgressWindow();
+
+    }
+
+
+    //-----------------------------------------------------
+    //start Refresh Kendo Grid Funtion For Index Page
+    function KendoGridRefreshInIndexPage() {
+        //Get Grid
+        var kdGrid = $('#gridMenu').data('kendoGrid');
+        kdGrid.dataSource.read();
+    }
+    //-----------------------------------------------------
+    //end Refresh Kendo Grid Funtion For Index Page
+
+    $(document).ready(function () {
+
+        //-------------------------------------------------------
+        //start of kendo grid
+
+        var _id = "#gridMenu";
+        var _readUrl = '@Url.Action("MenuRead", "Menu")';
+
+        $(_id).kendoGrid({
+            dataSource: {
+                transport: {
+                    read: _readUrl
+                },
+                schema: {
+                    data: function (data) {
+                        return data.Data;
+                    },
+                    model: {
+                        fields: {
+                            MenuId: { type: "number" },
+                            MenuName: { type: "string" },
+                            MenuCaption: { type: "string" },
+                            PageUrl: { type: "string" },
+                            SerialNo: { type: "number" },
+                            OrderNo: { type: "number" },
+                            ParentMenuId: { type: "number" },
+                            ParentMenuName: { type: "string" },
+                            ApplicationId: { type: "number" },
+                            ApplicationName: { type: "string" },
+                            ModuleId: { type: "number" },
+                            ModuleName: { type: "string" },
+
+                            ActionLink: { type: "string" }
+                        }
+                    }, //end model
+                    total: function (data) {
+                        return data.Total;
+                    }
+                },
+                pageSize: 5,
+                serverPaging: true,
+                serverFiltering: false,
+                serverSorting: true
+            },
+            height: 250,
+            filterable: true,
+            groupable: true,
+            sortable: true,
+            pageable: {
+                input: true,
+                numeric: true,
+                info: true,
+                previousNext: true,
+                refresh: true,
+                pageSizes: true
+            },
+            columns: [{ field: "MenuId", title: "MenuId", hidden: true, filterable: false, sortable: false },
+                  { field: "MenuName", title: "Menu Name" },
+                  { field: "MenuCaption", title: "Menu Caption" },
+                  { field: "PageUrl", title: "Page Url" },
+                  { field: "SerialNo", title: "Serial No" },
+                  { field: "OrderNo", title: "Order No" },
+                  { field: "ParentMenuId", title: "ParentMenuId", hidden: true, filterable: false, sortable: false },
+                  { field: "ParentMenuName", title: "ParentMenu Name" },
+                  { field: "ApplicationId", title: "ApplicationId", hidden: true, filterable: false, sortable: false },
+                  { field: "ApplicationName", title: "Application Name" },
+                  { field: "ModuleId", title: "ModuleId", hidden: true, filterable: false, sortable: false },
+                  { field: "ModuleName", title: "Module Name" },
+
+                  { field: "ActionLink", title: "Actions", width: "12%", filterable: false, sortable: false, template: "#= ActionLink #" }
+        ]
+        });
+        //end of kendo grid
+        //-------------------------------------------------------
+
+    });
+
+</script>

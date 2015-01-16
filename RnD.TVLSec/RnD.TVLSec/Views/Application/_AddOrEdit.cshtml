@@ -1,0 +1,54 @@
+﻿@model RnD.TVLSec.ViewModels.ApplicationViewModel
+@using (Ajax.BeginForm("Save", "Application", null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "updateTargetId",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnBegin = "AppCommonWindowBegin",
+            OnSuccess = "AppCommonWindowSuccess",
+            OnComplete = "AppCommonWindowComplete",
+        }, new { @id = "appCommonWindowForm" }))
+{
+    <div id="addOrEditPage" class="addOrEditPage form-win col-xs-12">
+        <div class="row ">
+            <div id="updateTargetId" class="callout callout-warning" style="display: none">
+            </div>
+        </div>
+        <div class="row ">
+            @Html.HiddenFor(model => model.ApplicationId)
+            @Html.HiddenFor(model => model.AreaName)
+            @Html.HiddenFor(model => model.ControllerName)
+            @Html.HiddenFor(model => model.ActionName)
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyId)
+                @Html.DropDownList("CompanyId", Model.ddlCompanies)
+                @Html.ValidationMessageFor(model => model.CompanyId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationName)
+                @Html.TextBoxFor(model => model.ApplicationName)
+                @Html.ValidationMessageFor(model => model.ApplicationName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationTitle)
+                @Html.TextBoxFor(model => model.ApplicationTitle)
+                @Html.ValidationMessageFor(model => model.ApplicationTitle)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+        <div class="row form-hr">
+            <div id="buttonZone" class="pull-right buttonZone">
+                <button type="submit" class="btn btn-success btn-sm btn-flat" id="btnSubmit" name="btnSubmit">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+                <button type="button" class="btn btn-warning btn-sm btn-flat" id="btnCancel" name="btnCancel"
+                    onclick="CloseAppCommonWindow()">
+                    <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+}

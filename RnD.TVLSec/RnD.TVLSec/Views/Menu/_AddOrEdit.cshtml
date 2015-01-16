@@ -1,0 +1,184 @@
+﻿@model RnD.TVLSec.ViewModels.MenuViewModel
+@using (Ajax.BeginForm("Save", "Menu", null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "updateTargetId",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnBegin = "AppCommonWindowBegin",
+            OnSuccess = "AppCommonWindowSuccess",
+            OnComplete = "MenuWindowComplete",
+        }, new { @id = "appCommonWindowForm" }))
+{
+    <div id="addOrEditPage" class="addOrEditPage form-win col-xs-12">
+        <div class="row ">
+            <div id="updateTargetId" class="callout callout-warning" style="display: none">
+            </div>
+        </div>
+        <div class="row ">
+            @Html.HiddenFor(model => model.MenuId)
+            @Html.HiddenFor(model => model.AreaName)
+            @Html.HiddenFor(model => model.ControllerName)
+            @Html.HiddenFor(model => model.ActionName)
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationId)
+                @Html.DropDownList("ApplicationId", Model.ddlApplications)
+                @*@Html.TextBoxFor(model => model.ApplicationId)*@ @*<input id="ApplicationId" name="ApplicationId" />*@
+                @Html.ValidationMessageFor(model => model.ApplicationId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ModuleId)
+                @*@Html.DropDownList("ModuleId", Model.ddlModules)*@ @*@Html.TextBoxFor(model => model.ModuleId)*@
+                @*<input id="ModuleId" name="ModuleId" />*@ @*<select id="ModuleId" name="ModuleId">
+                </select>*@
+                @Html.TextBoxFor(model => model.ModuleId)
+                @Html.ValidationMessageFor(model => model.ModuleId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ParentMenuId)
+                @Html.DropDownList("ParentMenuId", Model.ddlParentMenus)
+                @*<input id="ParentMenuId" name="ParentMenuId" />*@
+                @Html.ValidationMessageFor(model => model.ParentMenuId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MenuName)
+                @Html.TextBoxFor(model => model.MenuName)
+                @Html.ValidationMessageFor(model => model.MenuName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MenuCaption)
+                @Html.TextBoxFor(model => model.MenuCaption)
+                @Html.ValidationMessageFor(model => model.MenuCaption)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MenuCaptionBng)
+                @Html.TextBoxFor(model => model.MenuCaptionBng)
+                @Html.ValidationMessageFor(model => model.MenuCaptionBng)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PageUrl)
+                @Html.TextBoxFor(model => model.PageUrl)
+                @Html.ValidationMessageFor(model => model.PageUrl)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SerialNo)
+                @Html.TextBoxFor(model => model.SerialNo)
+                @Html.ValidationMessageFor(model => model.SerialNo)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.OrderNo)
+                @Html.TextBoxFor(model => model.OrderNo)
+                @Html.ValidationMessageFor(model => model.OrderNo)
+            </div>
+        </div>
+        <div class="row form-hr">
+            <div id="buttonZone" class="pull-right buttonZone">
+                <button type="submit" class="btn btn-success btn-sm btn-flat" id="btnSubmit" name="btnSubmit">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+                <button type="button" class="btn btn-warning btn-sm btn-flat" id="btnCancel" name="btnCancel"
+                    onclick="CloseAppCommonWindow()">
+                    <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+
+    function GetApplicationId() {
+        var model = {};
+        return model;
+    }
+
+    function ApplicationOnChange(e) {
+
+        var thisSelectedValue = this.value();
+        var thisSelectedText = this.text();
+        var module = $("#ModuleId").data("kendoDropDownList");
+        
+        if (thisSelectedValue > 0) {
+
+            var model = {};
+
+            model.Value = thisSelectedValue;
+            model.Text = thisSelectedText;
+
+            module.dataSource.read(model);
+            module.enable();
+
+        }
+        else {
+            module.enable(false);
+        }
+    }
+
+    $(document).ready(function () {
+
+        var _readApplicationUrl = '@Url.Action("GetApplicationList", "Menu")';
+
+        //        $("#ApplicationId").kendoDropDownList({
+        //            dataTextField: "Text",
+        //            dataValueField: "Value",
+        //            change: ApplicationOnChange,
+        //            dataSource: {
+        //                transport: {
+        //                    read: {
+        //                        url: _readApplicationUrl
+        //                    }//read
+        //                }//transport
+        //            }//dataSource
+        //        });
+
+        $("#ApplicationId").kendoDropDownList({
+            change: ApplicationOnChange
+        });
+
+        var _readModuleUrl = '@Url.Action("GetModuleList", "Menu")';
+
+        $("#ModuleId").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            //autoBind: false,
+            //enable: false,
+            dataSource: {
+                transport: {
+                    read: {
+                        url: _readModuleUrl,
+                        data: GetApplicationId
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        var _readParentMenuUrl = '@Url.Action("GetParentMenuList", "Menu")';
+
+        //$("#ParentMenuId").kendoDropDownList();
+        $("#ParentMenuId").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: _readParentMenuUrl
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        //-----------------------------------------------------
+        //        $('#btnSubmit').live('click', function () {
+
+        //            var actionName = $("#ActionName").val();
+
+        //            if (actionName == "Add") {
+
+        //                var parentMenu = $("#ParentMenuId").data("kendoDropDownList");
+        //                parentMenu.dataSource.read();
+
+        //            }
+
+        //        });
+        //-----------------------------------------------------
+
+    });
+
+</script>

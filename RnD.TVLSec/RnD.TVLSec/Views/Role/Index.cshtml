@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Role";
+}
+<div id="indexPage">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <a href="@Url.Action("Add", "Role")" title="Add" class="btn btn-primary btn-sm btn-flat" id="lnkAddCommon">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a></div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <div id="gridZone">
+                        <div id="gridRole">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    //-----------------------------------------------------
+    //start Refresh Kendo Grid Funtion For Index Page
+    function KendoGridRefreshInIndexPage() {
+        //Get Grid
+        var kdGrid = $('#gridRole').data('kendoGrid');
+        kdGrid.dataSource.read();
+    }
+    //-----------------------------------------------------
+    //end Refresh Kendo Grid Funtion For Index Page
+
+    //-----------------------------------------------------
+    //start Kendo Treeview Get All Data Funtion
+
+
+
+    //-----------------------------------------------------
+    //end Kendo Treeview Get All Data Funtion
+
+    $(document).ready(function () {
+
+        //-------------------------------------------------------
+        //start of kendo grid
+
+        var _id = "#gridRole";
+        var _readUrl = '@Url.Action("RoleRead", "Role")';
+
+        var _saveUrl = '@Url.Action("Save", "Role")';
+
+        $(_id).kendoGrid({
+            dataSource: {
+                transport: {
+                    read: _readUrl
+                },
+                schema: {
+                    data: function (data) {
+                        return data.Data;
+                    },
+                    model: {
+                        fields: {
+                            RoleId: { type: "number" },
+                            RoleName: { type: "string" },
+                            Description: { type: "string" },
+
+                            ApplicationId: { type: "number" },
+                            ApplicationName: { type: "string" },
+                            ModuleId: { type: "number" },
+                            ModuleName: { type: "string" },
+
+                            ActionLink: { type: "string" }
+                        }
+                    }, //end model
+                    total: function (data) {
+                        return data.Total;
+                    }
+                },
+                pageSize: 5,
+                serverPaging: true,
+                serverFiltering: false,
+                serverSorting: true
+            },
+            height: 250,
+            filterable: true,
+            groupable: true,
+            sortable: true,
+            pageable: {
+                input: true,
+                numeric: true,
+                info: true,
+                previousNext: true,
+                refresh: true,
+                pageSizes: true
+            },
+            columns: [{ field: "RoleId", title: "RoleId", hidden: true, filterable: false, sortable: false },
+                  { field: "RoleName", title: "Role Name" },
+                  { field: "Description", title: "Description" },
+                  { field: "ApplicationId", title: "ApplicationId", hidden: true, filterable: false, sortable: false },
+                  { field: "ApplicationName", title: "Application Name" },
+                  { field: "ModuleId", title: "ModuleId", hidden: true, filterable: false, sortable: false },
+                  { field: "ModuleName", title: "Module Name" },
+
+                  { field: "ActionLink", title: "Actions", width: "12%", filterable: false, sortable: false, template: "#= ActionLink #" }
+        ]
+        });
+        //end of kendo grid
+        //-------------------------------------------------------
+
+        //-----------------------------------------------------
+
+        $('#btnSubmitRole').live('click', function () {
+
+            var model = {};
+
+            var roleId = $("#RoleId").val();
+            var areaName = $("#AreaName").val();
+            var controllerName = $("#ControllerName").val();
+            var actionName = $("#ActionName").val();
+            var roleName = $("#RoleName").val();
+            var description = $("#Description").val();
+            var applicationId = $("#ApplicationId").data("kendoDropDownList").value();
+            var applicationName = $("#ApplicationId").data("kendoDropDownList").text();
+            var moduleId = $("#ModuleId").data("kendoDropDownList").value();
+            var moduleName = $("#ModuleId").data("kendoDropDownList").text();
+            var menuTreeViewModelList = [];
+            var rightTreeViewModelList = [];
+
+            //Menus
+            $("input:checkbox.tvMenuCheckbox:checked").each(function () {
+
+                var menuTreeViewModel = {};
+
+                var id = $(this).attr('model_id');
+                var text = $(this).attr('model_text');
+                var checked = $(this).attr('model_checked');
+                var parent_id = $(this).attr('model_parent_id');
+
+                menuTreeViewModel.Id = id;
+                menuTreeViewModel.Text = text;
+                menuTreeViewModel.IsChecked = checked;
+                menuTreeViewModel.ParentId = parent_id;
+
+                menuTreeViewModelList.push(menuTreeViewModel);
+
+            });
+
+
+            //Rights
+            $("input:checkbox.tvRightCheckbox:checked").each(function () {
+
+                var rightTreeViewModel = {};
+
+                var id = $(this).attr('model_id');
+                var text = $(this).attr('model_text');
+                var checked = $(this).attr('model_checked');
+                var parent_id = $(this).attr('model_parent_id');
+
+                rightTreeViewModel.Id = id;
+                rightTreeViewModel.Text = text;
+                rightTreeViewModel.IsChecked = checked;
+                rightTreeViewModel.ParentId = parent_id;
+
+                rightTreeViewModelList.push(rightTreeViewModel);
+
+            });
+
+            model.RoleId = roleId;
+            model.AreaName = areaName;
+            model.ControllerName = controllerName;
+            model.ActionName = actionName;
+            model.RoleName = roleName;
+            model.Description = description;
+            model.ApplicationId = applicationId;
+            model.ApplicationName = applicationName;
+            model.ModuleId = moduleId;
+            model.ModuleName = moduleName;
+            model.MenuTreeViewModelList = menuTreeViewModelList;
+            model.RightTreeViewModelList = rightTreeViewModelList;
+
+            var paramValue = JSON.stringify({ roleViewModel: model });
+            var postUrl = _saveUrl;
+
+            AjaxContentPostForAppCommonWindowWithParam(postUrl, paramValue);
+
+            return false;
+
+        });
+
+
+        //-----------------------------------------------------
+
+    });
+
+</script>

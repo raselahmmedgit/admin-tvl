@@ -1,0 +1,24 @@
+﻿@model RnD.TVLSec.ViewModels.ModuleViewModel
+<div id="detailsPage" class="detailsPage  form-win col-xs-12">
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModuleName)
+            @Html.DisplayFor(model => model.ModuleName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModuleTitle)
+            @Html.DisplayFor(model => model.ModuleTitle)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description)
+            @Html.DisplayFor(model => model.Description)
+        </div>
+    </div>
+    <div class="row form-hr">
+        <div id="buttonZone" class="pull-right buttonZone">
+            <button type="button" class="btn btn-warning btn-sm btn-flat" id="btnCancel" name="btnCancel"
+                onclick="CloseAppCommonWindow()">
+                <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+        </div>
+    </div>
+</div>

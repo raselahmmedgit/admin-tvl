@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "UserGroup";
+}
+<div id="indexPage">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <a href="@Url.Action("Add", "UserGroup")" title="Add" class="btn btn-primary btn-sm btn-flat" id="lnkAddCommon">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a></div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <div id="gridZone">
+                        <div id="gridUserGroup">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    //-----------------------------------------------------
+    //start Refresh Kendo Grid Funtion For Index Page
+    function KendoGridRefreshInIndexPage() {
+        //Get Grid
+        var kdGrid = $('#gridUserGroup').data('kendoGrid');
+        kdGrid.dataSource.read();
+    }
+    //-----------------------------------------------------
+    //end Refresh Kendo Grid Funtion For Index Page
+
+    //-----------------------------------------------------
+    //start Kendo Treeview Get All Data Funtion
+
+
+
+    //-----------------------------------------------------
+    //end Kendo Treeview Get All Data Funtion
+
+    $(document).ready(function () {
+
+        //-------------------------------------------------------
+        //start of kendo grid
+
+        var _id = "#gridUserGroup";
+        var _readUrl = '@Url.Action("UserGroupRead", "UserGroup")';
+
+        var _saveUrl = '@Url.Action("Save", "UserGroup")';
+
+        $(_id).kendoGrid({
+            dataSource: {
+                transport: {
+                    read: _readUrl
+                },
+                schema: {
+                    data: function (data) {
+                        return data.Data;
+                    },
+                    model: {
+                        fields: {
+                            GroupId: { type: "number" },
+                            GroupName: { type: "string" },
+                            Description: { type: "string" },
+
+                            ActionLink: { type: "string" }
+                        }
+                    }, //end model
+                    total: function (data) {
+                        return data.Total;
+                    }
+                },
+                pageSize: 5,
+                serverPaging: true,
+                serverFiltering: false,
+                serverSorting: true
+            },
+            height: 250,
+            filterable: true,
+            groupable: true,
+            sortable: true,
+            pageable: {
+                input: true,
+                numeric: true,
+                info: true,
+                previousNext: true,
+                refresh: true,
+                pageSizes: true
+            },
+            columns: [{ field: "GroupId", title: "GroupId", hidden: true, filterable: false, sortable: false },
+                  { field: "GroupName", title: "Group Name" },
+                  { field: "Description", title: "Description" },
+
+
+                  { field: "ActionLink", title: "Actions", width: "12%", filterable: false, sortable: false, template: "#= ActionLink #" }
+        ]
+        });
+        //end of kendo grid
+        //-------------------------------------------------------
+
+        //-----------------------------------------------------
+
+        $('#btnSubmitGroup').live('click', function () {
+
+            var model = {};
+
+            var groupId = $("#GroupId").val();
+            var areaName = $("#AreaName").val();
+            var controllerName = $("#ControllerName").val();
+            var actionName = $("#ActionName").val();
+            var groupName = $("#GroupName").val();
+            var description = $("#Description").val();
+
+            var applicationId = $("#ApplicationId").data("kendoDropDownList").value();
+            var applicationName = $("#ApplicationId").data("kendoDropDownList").text();
+            var moduleId = $("#ModuleId").data("kendoDropDownList").value();
+            var moduleName = $("#ModuleId").data("kendoDropDownList").text();
+
+            var roleTreeViewModelList = [];
+
+            //Roles
+            $("input:checkbox.tvRoleCheckbox:checked").each(function () {
+
+                var roleTreeViewModel = {};
+
+                var id = $(this).attr('model_id');
+                var text = $(this).attr('model_text');
+                var checked = $(this).attr('model_checked');
+                var parent_id = $(this).attr('model_parent_id');
+
+                roleTreeViewModel.Id = id;
+                roleTreeViewModel.Text = text;
+                roleTreeViewModel.IsChecked = checked;
+                roleTreeViewModel.ParentId = parent_id;
+
+                roleTreeViewModelList.push(roleTreeViewModel);
+
+            });
+
+            model.GroupId = groupId;
+            model.AreaName = areaName;
+            model.ControllerName = controllerName;
+            model.ActionName = actionName;
+            model.GroupName = groupName;
+            model.Description = description;
+            model.ApplicationId = applicationId;
+            model.ApplicationName = applicationName;
+            model.ModuleId = moduleId;
+            model.ModuleName = moduleName;
+            model.RoleTreeViewModelList = roleTreeViewModelList;
+
+            console.log(model);
+
+            var paramValue = JSON.stringify({ groupViewModel: model });
+            var postUrl = _saveUrl;
+
+            console.log(paramValue);
+
+            AjaxContentPostForAppCommonWindowWithParam(postUrl, paramValue);
+
+            return false;
+
+        });
+
+
+        //-----------------------------------------------------
+
+    });
+
+</script>

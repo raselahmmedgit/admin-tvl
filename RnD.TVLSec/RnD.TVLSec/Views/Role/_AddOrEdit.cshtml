@@ -1,0 +1,253 @@
+﻿@model RnD.TVLSec.ViewModels.RoleViewModel
+@using (Ajax.BeginForm(null, null, null, new { @id = "appCommonWindowForm" }))
+{
+    <div id="addOrEditPage" class="addOrEditPage form-win col-xs-12">
+        <div class="row ">
+            <div id="updateTargetId" class="callout callout-warning" style="display: none">
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-xs-6">
+                @Html.HiddenFor(model => model.RoleId)
+                @Html.HiddenFor(model => model.AreaName)
+                @Html.HiddenFor(model => model.ControllerName)
+                @Html.HiddenFor(model => model.ActionName)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApplicationId)
+                    @Html.DropDownList("ApplicationId", Model.ddlApplications, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.ApplicationId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ModuleId)
+                    @Html.TextBoxFor(model => model.ModuleId, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.ModuleId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RoleName)
+                    @Html.TextBoxFor(model => model.RoleName, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.RoleName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextAreaFor(model => model.Description, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div id="treeviewScroll" class="col-xs-6">
+                <div id="buttonExpandCollapseZone" class="buttonZone">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewExpand"
+                            name="btnTreeviewExpand">
+                            <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Expand All</button>
+                        <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewCollapse"
+                            name="btnTreeviewCollapse">
+                            <i class="fa fa-minus-square-o"></i>&nbsp;&nbsp;Collapse All</button></div>
+                </div>
+                <div id="treeviewZone">
+                    <div class="treeviewMenuZone">
+                        <label>
+                            Menus</label>
+                        <div id="treeviewMenus">
+                        </div>
+                    </div>
+                    <div class="treeviewRightZone">
+                        <label>
+                            Rights</label>
+                        <div id="treeviewRights">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-hr">
+            <div id="buttonZone" class="pull-right buttonZone">
+                <button type="button" class="btn btn-success btn-sm btn-flat" id="btnSubmitRole"
+                    name="btnSubmitRole">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+                <button type="button" class="btn btn-warning btn-sm btn-flat" id="btnCancel" name="btnCancel"
+                    onclick="CloseAppCommonWindow()">
+                    <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+
+    function GetApplicationId() {
+        var model = {};
+        return model;
+    }
+
+    function GetTreeviewMenuParam() {
+        var model = {};
+        return model;
+    }
+
+    function GetTreeviewRightParam() {
+        var model = {};
+        return model;
+    }
+
+    function ApplicationOnChange(e) {
+
+        var thisSelectedValue = this.value();
+        var thisSelectedText = this.text();
+        var module = $("#ModuleId").data("kendoDropDownList");
+
+        if (thisSelectedValue > 0) {
+
+            var model = {};
+
+            model.Value = thisSelectedValue;
+            model.Text = thisSelectedText;
+
+            module.dataSource.read(model);
+            module.enable();
+
+        }
+        else {
+            module.enable(false);
+        }
+    }
+
+    function ModuleOnChange(e) {
+
+        var thisSelectedValue = this.value();
+        var thisSelectedText = this.text();
+        var applicationId = $("#ApplicationId").data("kendoDropDownList").value();
+
+        if (thisSelectedValue > 0) {
+
+            var model = {};
+
+            model.ApplicationId = applicationId;
+            model.ModuleId = thisSelectedValue;
+
+            var treeviewMenus = $("#treeviewMenus").data("kendoTreeView");
+            treeviewMenus.dataSource.read(model);
+
+            var treeviewRights = $("#treeviewRights").data("kendoTreeView");
+            treeviewRights.dataSource.read(model);
+
+        }
+    }
+
+    function MenusOnSelect(e) {
+        //this refers to the TreeView object
+        var dataItem = this.dataItem(e.node);
+
+        console.log("Selected node with id=" + dataItem.id);
+    }
+
+    function RightsOnSelect(e) {
+        //this refers to the TreeView object
+        var dataItem = this.dataItem(e.node);
+
+        console.log("Selected node with id=" + dataItem.id);
+    }
+
+    $(document).ready(function () {
+
+        var _readApplicationUrl = '@Url.Action("GetApplicationList", "Role")';
+
+        $("#ApplicationId").kendoDropDownList({
+            change: ApplicationOnChange
+        });
+
+        var _readModuleUrl = '@Url.Action("GetModuleList", "Role")';
+
+        $("#ModuleId").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            change: ModuleOnChange,
+            dataSource: {
+                transport: {
+                    read: {
+                        url: _readModuleUrl,
+                        data: GetApplicationId
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        //-----------------------------------------------------
+        //start treeview
+
+        var _readTreeviewMenuUrl = '@Url.Action("GetMenuList", "Role")';
+
+        $("#treeviewMenus").kendoTreeView({
+            checkboxes: {
+                checkChildren: true,
+                template: "<input type='checkbox' id='tvMenuCheckbox_#=item.Id#' class='tvMenuCheckbox' name='tvMenuCheckbox' model_id='#=item.Id#' model_text='#=item.Text#' model_checked='#=item.IsChecked#' model_parent_id='#=item.ParentId#' value='#=item.Id#' #if(item.IsChecked == 'True'){# checked #}else{#  #}# />"
+            },
+            dataTextField: "Text",
+            dataValueField: "Id",
+            //dataTextField: "text",
+            //dataValueField: "id",
+            //select: MenusOnSelect,
+            dataSource: {
+                schema: {
+                    model: {
+                        id: "Id",
+                        text: "Text",
+                        checked: "IsChecked",
+                        parent_id: "ParentId",
+                        children: "Items"
+                    }
+                }, //schema
+                transport: {
+                    read: {
+                        url: _readTreeviewMenuUrl,
+                        data: GetTreeviewMenuParam
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        var _readTreeviewRightUrl = '@Url.Action("GetRightList", "Role")';
+
+        $("#treeviewRights").kendoTreeView({
+            checkboxes: {
+                checkChildren: true,
+                template: "<input type='checkbox' id='tvRightCheckbox_#=item.Id#' class='tvRightCheckbox' name='tvRightCheckbox' model_id='#=item.Id#' model_text='#=item.Text#' model_checked='#=item.IsChecked#' model_parent_id='#=item.ParentId#' value='#=item.Id#' #if(item.IsChecked == 'True'){# checked #}else{#  #}# />"
+            },
+            dataTextField: "Text",
+            dataValueField: "Id",
+            //dataTextField: "text",
+            //dataValueField: "id",
+            //select: RightsOnSelect,
+            dataSource: {
+                schema: {
+                    model: {
+                        id: "Id",
+                        text: "Text",
+                        checked: "IsChecked",
+                        parent_id: "ParentId",
+                        children: "Items"
+                    }
+                }, //schema
+                transport: {
+                    read: {
+                        url: _readTreeviewRightUrl,
+                        data: GetTreeviewRightParam
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        $('#btnTreeviewExpand').live('click', function () {
+            $("#treeviewMenus").data("kendoTreeView").expand(".k-item");
+            $("#treeviewRights").data("kendoTreeView").expand(".k-item");
+        });
+
+        $('#btnTreeviewCollapse').live('click', function () {
+            $("#treeviewMenus").data("kendoTreeView").collapse(".k-item");
+            $("#treeviewRights").data("kendoTreeView").collapse(".k-item");
+        });
+
+        //end treeview
+        //-----------------------------------------------------
+
+    });
+
+</script>

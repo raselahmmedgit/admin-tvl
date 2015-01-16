@@ -1,0 +1,200 @@
+﻿.error-page {
+    margin: 0px !important;
+}
+
+.form-group
+{
+    margin-bottom: 10px !important;
+}
+
+.form-win
+{
+}
+
+.form-win label
+{
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 26% !important;
+}
+
+.form-win input, select, textarea
+{
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #CCCCCC;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    -ms-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 14px;
+    height: 30px;
+    line-height: 1.42857;
+    padding: 4px;
+    -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -moz-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -ms-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -o-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 70% !important;
+}
+
+.form-win textarea
+{
+    height: 50px !important;
+}
+
+.form-box label
+{
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 28% !important;
+}
+
+.form-box input, select, textarea
+{
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #CCCCCC;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    -ms-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 14px;
+    height: 30px;
+    line-height: 1.42857;
+    padding: 4px;
+    -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -moz-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -ms-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -o-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.form-control-win
+{
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #CCCCCC;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    -ms-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 14px;
+    height: 30px;
+    line-height: 1.42857;
+    padding: 4px;
+    -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -moz-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -ms-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -o-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 75%;
+}
+
+.form-control-box
+{
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #CCCCCC;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    -ms-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 14px;
+    height: 30px;
+    line-height: 1.42857;
+    padding: 4px;
+    -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -moz-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -ms-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    -o-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 75%;
+}
+
+.form-display-win
+{
+}
+
+.right-side > .content-header
+{
+    padding: 10px 10px 10px 10px !important;
+}
+
+.right-side > .content-header > .breadcrumb
+{
+    top: 6px !important;
+    right: 15px !important;
+}
+
+.user-panel
+{
+    padding: 5px 10px !important;
+}
+
+.user-panel > .image > img
+{
+    height: 35px !important;
+    width: 35px !important;
+}
+
+.user-panel > .info
+{
+    padding: 0px 5px 0px 15px !important;
+}
+
+.user-panel > .info > p
+{
+    margin-bottom: 8px !important;
+}
+
+.box .box-header a#lnkAddCommon
+{
+    color: #ffffff !important;
+    margin-top: 10px !important;
+    margin-left: 11px !important;
+}
+
+.box .box-header a.lnkEditCommon
+{
+    color: #ffffff !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+}
+
+.box .box-header a.lnkDeleteCommon
+{
+    color: #ffffff !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+}
+
+.box .box-header a.lnkDetailsCommon
+{
+    color: #ffffff !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+}
+
+.callout
+{
+    margin: 0 0 10px !important;
+    padding: 5px 10px 5px !important;
+}
+
+.alert
+{
+    padding: 5px !important;
+    margin-left: 0 !important;
+    margin-bottom: 0 !important;
+    -ms-border-radius: 0 !important;
+    border-radius: 0 !important;
+}

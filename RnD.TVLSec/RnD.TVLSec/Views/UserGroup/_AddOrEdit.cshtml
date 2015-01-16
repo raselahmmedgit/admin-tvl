@@ -1,0 +1,229 @@
+﻿@model RnD.TVLSec.ViewModels.GroupViewModel
+@using (Ajax.BeginForm(null, null, null, new { @id = "appCommonWindowForm" }))
+{
+    <div id="addOrEditPage" class="addOrEditPage form-win col-xs-12">
+        <div class="row ">
+            <div id="updateTargetId" class="callout callout-warning" style="display: none">
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-xs-6">
+                @Html.HiddenFor(model => model.GroupId)
+                @Html.HiddenFor(model => model.AreaName)
+                @Html.HiddenFor(model => model.ControllerName)
+                @Html.HiddenFor(model => model.ActionName)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GroupName)
+                    @Html.TextBoxFor(model => model.GroupName, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.GroupName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextAreaFor(model => model.Description, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApplicationId)
+                    @Html.DropDownList("ApplicationId", Model.ddlApplications, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.ApplicationId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ModuleId)
+                    @Html.TextBoxFor(model => model.ModuleId, new { @style = "width: 95% !important" })
+                    @Html.ValidationMessageFor(model => model.ModuleId)
+                </div>
+                <div id="buttonZone" class="form-group buttonZone">
+                    <button type="button" class="btn btn-success btn-sm btn-flat" id="btnSearchGroup"
+                        name="btnSearchGroup">
+                        <i class="fa fa-search"></i>&nbsp;&nbsp;Search</button>
+                </div>
+            </div>
+            <div id="treeviewScroll" class="col-xs-6">
+                <div id="buttonExpandCollapseZone" class="buttonZone">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewExpand"
+                            name="btnTreeviewExpand">
+                            <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Expand All</button>
+                        <button type="button" class="btn btn-primary btn-sm btn-flat" id="btnTreeviewCollapse"
+                            name="btnTreeviewCollapse">
+                            <i class="fa fa-minus-square-o"></i>&nbsp;&nbsp;Collapse All</button></div>
+                </div>
+                <div id="treeviewZone">
+                    <div class="treeviewRoleZone">
+                        <label>
+                            Roles</label>
+                        <div id="treeviewRoles">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-hr">
+            <div id="buttonZone" class="pull-right buttonZone">
+                <button type="button" class="btn btn-success btn-sm btn-flat" id="btnSubmitGroup"
+                    name="btnSubmitGroup">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+                <button type="button" class="btn btn-warning btn-sm btn-flat" id="btnCancel" name="btnCancel"
+                    onclick="CloseAppCommonWindow()">
+                    <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+
+    function GetApplicationId() {
+        var model = {};
+        return model;
+    }
+
+    function GetTreeviewRoleParam() {
+        var model = {};
+        return model;
+    }
+
+    function ApplicationOnChange(e) {
+
+        var thisSelectedValue = this.value();
+        var thisSelectedText = this.text();
+        var module = $("#ModuleId").data("kendoDropDownList");
+
+        if (thisSelectedValue > 0) {
+
+            var model = {};
+
+            model.Value = thisSelectedValue;
+            model.Text = thisSelectedText;
+
+            module.dataSource.read(model);
+            module.enable();
+
+        }
+        else {
+            module.enable(false);
+        }
+    }
+
+    function ModuleOnChange(e) {
+
+        var thisSelectedValue = this.value();
+        var thisSelectedText = this.text();
+        var applicationId = $("#ApplicationId").data("kendoDropDownList").value();
+
+        if (thisSelectedValue > 0) {
+
+            var model = {};
+
+            model.ApplicationId = applicationId;
+            model.ModuleId = thisSelectedValue;
+
+            var treeviewRoles = $("#treeviewRoles").data("kendoTreeView");
+            treeviewRoles.dataSource.read(model);
+
+        }
+    }
+
+    function RolesOnSelect(e) {
+        //this refers to the TreeView object
+        var dataItem = this.dataItem(e.node);
+
+        console.log("Selected node with id=" + dataItem.id);
+    }
+
+    function LoadRolesTreeview(applicationId, moduleId) {
+
+        if (applicationId > 0 && moduleId > 0) {
+
+            var model = {};
+
+            model.ApplicationId = applicationId;
+            model.ModuleId = moduleId;
+
+            var treeviewRoles = $("#treeviewRoles").data("kendoTreeView");
+            treeviewRoles.dataSource.read(model);
+
+        }
+
+    }
+
+    $(document).ready(function () {
+
+        var _readApplicationUrl = '@Url.Action("GetApplicationList", "UserGroup")';
+
+        $("#ApplicationId").kendoDropDownList({
+            change: ApplicationOnChange
+        });
+
+        var _readModuleUrl = '@Url.Action("GetModuleList", "UserGroup")';
+
+        $("#ModuleId").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            change: ModuleOnChange,
+            dataSource: {
+                transport: {
+                    read: {
+                        url: _readModuleUrl,
+                        data: GetApplicationId
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        //-----------------------------------------------------
+        //start treeview
+
+        var _readTreeviewRoleUrl = '@Url.Action("GetRoleList", "UserGroup")';
+
+        $("#treeviewRoles").kendoTreeView({
+            checkboxes: {
+                checkChildren: true,
+                template: "<input type='checkbox' id='tvRoleCheckbox_#=item.Id#' class='tvRoleCheckbox' name='tvRoleCheckbox' model_id='#=item.Id#' model_text='#=item.Text#' model_checked='#=item.IsChecked#' model_parent_id='#=item.ParentId#' value='#=item.Id#' #if(item.IsChecked == 'True'){# checked #}else{#  #}# />"
+            },
+            dataTextField: "Text",
+            dataValueField: "Id",
+            //dataTextField: "text",
+            //dataValueField: "id",
+            //select: MenusOnSelect,
+            dataSource: {
+                schema: {
+                    model: {
+                        id: "Id",
+                        text: "Text",
+                        checked: "IsChecked",
+                        parent_id: "ParentId",
+                        children: "Items"
+                    }
+                }, //schema
+                transport: {
+                    read: {
+                        url: _readTreeviewRoleUrl,
+                        data: GetTreeviewRoleParam
+                    }//read
+                }//transport
+            }//dataSource
+        });
+
+        $('#btnTreeviewExpand').live('click', function () {
+            $("#treeviewRoles").data("kendoTreeView").expand(".k-item");
+        });
+
+        $('#btnTreeviewCollapse').live('click', function () {
+            $("#treeviewRoles").data("kendoTreeView").collapse(".k-item");
+        });
+
+        $('#btnSearchGroup').live('click', function () {
+
+            var applicationId = $("#ApplicationId").data("kendoDropDownList").value();
+            var moduleId = $("#ModuleId").data("kendoDropDownList").value();
+
+            LoadRolesTreeview(applicationId, moduleId);
+
+        });
+
+        //end treeview
+        //-----------------------------------------------------
+
+    });
+
+</script>
